@@ -6,7 +6,6 @@ body
 #test
 {
     background-color: brown;
-    text-align: center;
     
     position: absolute;
     transform: translate(-50%, -50%);
@@ -17,4 +16,14 @@ body
 
     width: 200px;
     height: 60px;
+
+    background-image: radial-gradient(circle farthest-corner at top left, rgb(119, 119, 119), rgb(63, 62, 62));
+}
+
+#test > p
+{
+    text-align: center;
+    color: white;
+    font-size: large;
+    font-family: 'Segoe UI';
 }
