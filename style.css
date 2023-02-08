@@ -10,31 +10,3 @@ html
 {
     height: 100%;
 }
-
-.top-bar
-{
-    background: rgb(36, 36, 36);
-    width: 100vw;
-    padding: 30px;
-    position: relative;
-}
-
-.menu
-{
-    display: block;
-    position: absolute;
-    margin: 0px;
-    top: 50%;
-    right: 80px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    background: none;
-}
-.menu > div
-{
-    width: 26px;
-    height: 5px;
-    background: white;
-    border-radius: 20px;
-    margin: 3px;
-}
