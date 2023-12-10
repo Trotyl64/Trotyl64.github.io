@@ -1,0 +1,30 @@
+#okno{
+    /* background-color: black; */
+    border: 2px solid white;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    bottom: 0%;
+    right: 0%;
+    margin: auto;
+    padding-left: 9px;
+    padding-top: 9px;
+}
+body{
+    margin: 0;
+    background-color: gray;
+}
+#lost{
+    /* background-color: darkgray; */
+    width: fit-content;
+    left: 44%;
+    padding: 10px;
+    position: absolute;
+    text-align: center;
+    font-size: 50px;
+}
+#points{
+    font-size: 40px;
+    margin-left: 50px;
+    margin-top: 50px;
+}

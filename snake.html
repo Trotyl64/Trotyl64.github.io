@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="snake.css">
+    </head>
+    <body>
+        <canvas id="okno" width="600" height="600"></canvas>
+        <div id="lost">
+            <a></a>
+        </div>
+        <p id="points">: 0</p>
+        <script>
+        class Vector2 {
+            constructor(x, y) {
+            this.x = x;
+            this.y = y;
+        }
+        }
+
+        const lostElement = document.getElementById("lost");
+        lostElement.style.visibility = "hidden";
+
+        const pointsElement = document.getElementById("points");
+        var lost = false;
+        const c = document.getElementById("okno");
+        const ctx = c.getContext("2d");
+        const mapSize = 12;
+        const squareSize = 40;
+        var size = 1;
+        var points = 0;
+        var moveDir = new Vector2(0, 1);
+        var snake = [mapSize * mapSize];
+        var map = [mapSize * mapSize];
+        
+        var apple = new Vector2(Math.floor(Math.random() * (mapSize)), Math.floor(Math.random() * (mapSize)));
+        //console.log("apple " + apple.x + ", " + apple.y);
+
+        //clear map
+        for (let i = 0; i < mapSize; i++) {
+            for (let i2 = 0; i2 < mapSize; i2++) {
+                map[i2 + (i * squareSize)] = 0;
+            }
+        }
+
+        //default snake
+        for (let i = 0; i < snake.length; i++) {
+                snake[i] = new Vector2(-100, -100)
+            }
+
+        //starting place
+        for (let i = 0; i < size; i++) {
+            snake[i] = new Vector2(0, 0);
+        }
+
+        setInterval(Loop, 100);
+        function Loop()
+        {
+            if(lost) {
+                return;
+            }
+            //console.log("snake " + snake[0].x + ", " + snake[0].y);
+            //clear map
+            for (let i = 0; i < mapSize; i++) {
+                for (let i2 = 0; i2 < mapSize; i2++) {
+                    map[i2 + (i * mapSize)] = 0;
+                }
+            }
+
+            //set apple
+            map[apple.x + (apple.y * mapSize)] = 2; 
+
+            //move
+            for (let i = size-1; i >= 0; i--) {
+                if(i == 0) {
+                    snake[i] = new Vector2(snake[i].x + moveDir.x, snake[i].y + moveDir.y);
+                }
+                else {
+                    snake[i] = new Vector2(snake[i-1].x, snake[i-1].y);
+                }
+                console.log("i: " + i + " pos: " + snake[i].x + ", " + snake[i].y);
+                //set snake tile
+                if(i == 0) {
+                    map[snake[i].x + (snake[i].y * mapSize)] = 3;
+                }
+                else {
+                    map[snake[i].x + (snake[i].y * mapSize)] = 1;
+                }
+            }
+
+            //boundaries
+            if(snake[0].x >= mapSize || snake[0].y >= mapSize || snake[0].x < 0 || snake[0].y < 0) {
+                Lose();
+                return;
+            }
+            for (let i = 1; i < size; i++) {
+                if(snake[0].x == snake[i].x && snake[0].y == snake[i].y)
+                {
+                    Lose();
+                    return;
+                }
+            }
+
+            //got apple
+            if(snake[0].x == apple.x && snake[0].y == apple.y) {
+                //new apple
+                var appleCreated = false;
+                while(!appleCreated) {
+                    apple = new Vector2(Math.floor(Math.random() * (mapSize)), Math.floor(Math.random() * (mapSize)));
+                    for (let i = 0; i < size; i++) {
+                        if(apple.x == snake[i].x && apple.y == snake[i].y) {
+                            break;
+                        }
+                        if(i == size - 1) {
+                            appleCreated = true;
+                        }
+                    }
+                }
+                snake[size] = new Vector2(snake[size-1].x, snake[size-1].y);
+                size++;
+                points++;
+                pointsElement.innerHTML = ": " + points;
+            }
+
+            window.addEventListener('keydown', function (e) {
+                switch (e.key) {
+                    case "w":
+                        var newDir = new Vector2(-1, 0);
+                        if((Math.abs(newDir.x) == Math.abs(moveDir.x)) && (Math.abs(newDir.y) == Math.abs(moveDir.y))) {
+                            break;
+                        }
+                        moveDir = newDir;
+                        break;
+                    case "a":
+                        var newDir = new Vector2(0, -1);
+                        if((Math.abs(newDir.x) == Math.abs(moveDir.x)) && (Math.abs(newDir.y) == Math.abs(moveDir.y))) {
+                            break;
+                        }
+                        moveDir = newDir;
+                        break;
+                    case "s":
+                    var newDir = new Vector2(1, 0);
+                        if((Math.abs(newDir.x) == Math.abs(moveDir.x)) && (Math.abs(newDir.y) == Math.abs(moveDir.y))) {
+                            break;
+                        }
+                        moveDir = newDir;
+                        break;
+                    case "d":
+                    var newDir = new Vector2(0,1);
+                        if((Math.abs(newDir.x) == Math.abs(moveDir.x)) && (Math.abs(newDir.y) == Math.abs(moveDir.y))) {
+                            break;
+                        }
+                        moveDir = newDir;
+                        break;
+                }
+            }, false);
+            
+            //rysowanie
+            ctx.fillStyle = "white";
+            for (let i = 0; i < mapSize; i++) {
+                for (let i2 = 0; i2 < mapSize; i2++) {
+                    switch (map[i2 + (i * mapSize)]) {
+                        case 0:
+                            ctx.fillStyle = "white";
+                            break;
+                        case 1:
+                            ctx.fillStyle = "green";
+                            break;
+                        case 2:
+                            ctx.fillStyle = "red";
+                            break;
+                        case 3:
+                            ctx.fillStyle = "darkgreen";
+                            break;
+                    }
+                    ctx.fillRect(i * 50, i2 * 50, squareSize, squareSize);
+                }
+            }
+        }
+        function Lose()
+        {
+            lostElement.style.visibility = "visible";
+            lost = true;
+        }
+        </script>
+    </body>
+</html>
