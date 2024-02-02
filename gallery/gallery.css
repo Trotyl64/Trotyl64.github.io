@@ -17,14 +17,12 @@ body{
     background: radial-gradient(circle at top left, rgb(0, 0, 0), rgb(23, 13, 27)); 
     background-color: aqua;
     margin: 0;
-}
-h1{
-    color: white;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: 100;
 }
 .main{
-    text-align: center;
+    color: white;
+    font-weight: 100;
 }
 .banner{
     display: flex;
@@ -34,8 +32,15 @@ h1{
 .panel{
     width: 33.33333%;
     display: flex;
+    text-align: center;
+    outline: black 1px solid;
 } 
-
+.centerpanel{
+    width: 33.33333%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+} 
 
 .button{
     text-decoration: none;
@@ -47,6 +52,7 @@ h1{
 }
 .button > h1{
     width: fit-content;
+    font-weight: 100;
 }
 .button:hover{
     background-color: rgb(11, 11, 11);
